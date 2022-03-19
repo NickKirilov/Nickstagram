@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block page_content %}
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+
+
+                <div class="col-md-4 justify-content-center">
+                    <div class="card mb-4 box-shadow" style="height: 20rem; width: 100%;">
+
+
+                        <img class="img-thumbnail" style="width: auto;height: 70%; display: block;"
+                             src="/media/{{ post.image }}" alt="post image">
+
+
+                        <p class="card-text text-center">{{ post.description }}</p>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="btn-group">
+                                <a type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a type="button" class="btn btn-sm btn-outline-secondary">Delete</a>
+                                <a type="button" href="{% url 'home page' %}" class="btn btn-sm btn-outline-secondary">Go back</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
