@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+    <div class="album py-5 bg-light">
+        <div class="container">
+            {% if not request.user.is_authenticated %}
+                <div class="container row justify-content-center col-md-6 offset-md-3"
+                     style="background-color: #b2d8ff">
+
+                    <div class="card mb-4" style="height: 20rem; width: 100%; margin-top: 3%">
+                        <div class="d-flex justify-content-center align-items-center welcome-div">
+
+                        </div>
+
+                    </div>
+                    <div class="btn-group mb-4" style="bottom:0; align-items: center;">
+                        <a type="button" href="{% url 'login page' %}"
+                           class="btn btn-primary col-md-6 btn-submit" style="margin-right: 3px;">Login</a>
+                        <a type="button" href="{% url 'register page' %}"
+                           class="btn btn-primary col-md-6 btn-submit" style="margin-right: 3px;">Register</a>
+                    </div>
+
+                </div>
+            {% endif %}
+            <div class="row justify-content-center">
+                {% for post in posts %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow" style="height: 20rem; width: 100%;">
+                            <img class="img-thumbnail" style="width: auto;height: 70%; display: block;"
+                                 src="/media/{{ post.image }}" alt="post image">
+                            <p class="card-text text-center">{{ post.description }}</p>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="btn-group">
+                                    <a type="button" href="{% url 'post details page' post.pk %}"
+                                       class="btn btn-sm btn-outline-secondary">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

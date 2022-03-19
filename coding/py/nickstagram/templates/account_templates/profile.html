@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block page_content %}
+
+    <h1>Show Profile</h1>
+    {{ profile.first_name }} {{ profile.last_name }}
+    <br>
+    {% for post in posts %}
+        <div>
+            <p>{{ post.description }}</p>
+        {% if post.image %}
+            <img src="{{ post.image }}">
+        {% endif %}
+        </div>
+    {% endfor %}
+
+    <a href="{% url 'logout page' %}">Log Out</a>
+    <br>
+    <a href="{% url 'edit profile page' %}">Edit your details</a>
+    <br>
+    <a href="{% url 'delete profile page' %}">Delete your account</a>
+
+{% endblock %}
