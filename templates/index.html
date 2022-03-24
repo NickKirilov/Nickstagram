@@ -28,7 +28,7 @@
                         <div class="card mb-4 box-shadow" style="height: 20rem; width: 100%;">
                             <img class="img-thumbnail" style="width: auto;height: 70%; display: block;"
                                  src="/media/{{ post.image }}" alt="post image">
-                            <p class="card-text text-center">{{ post.description }}</p>
+                            <p class="card-text text-center">{{ post.title }}</p>
                             <div class="d-flex justify-content-center align-items-center">
                                 <div class="btn-group">
                                     <a type="button" href="{% url 'post details page' post.pk %}"

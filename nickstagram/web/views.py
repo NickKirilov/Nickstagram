@@ -1,12 +1,13 @@
 from django.contrib.auth import get_user, login
 from django.contrib.auth.views import LoginView
+from django.contrib.messages import views as msg_views
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views import generic as views
 
 from nickstagram.accounts.models import Profile
-from nickstagram.web.forms import CreatePostForm
+from nickstagram.web.forms import CreatePostForm, EditPostForm, DeletePostForm
 from nickstagram.web.models import Post
 
 
@@ -54,7 +55,7 @@ class CreatePostView(views.View):
             post.save()
 
             return redirect('home page')
-        print(post_form.errors)
+
         context = {
             'post_form': post_form,
         }
@@ -62,11 +63,26 @@ class CreatePostView(views.View):
 
 
 class PostDetailsView(views.View):
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, request,  pk, *args, **kwargs):
         post = Post.objects.get(pk=pk)
 
         context = {
-            'post': post
+            'post': post,
+            'user': request.user,
         }
 
         return render(request, 'post_templates/post_details.html', context)
+
+
+class EditPostView(views.UpdateView):
+    template_name = 'post_templates/edit_post.html'
+    form_class = EditPostForm
+    model = Post
+    success_url = reverse_lazy('home page')
+
+
+class DeletePostView(views.DeleteView):
+    form_class = DeletePostForm
+    model = Post
+    success_url = reverse_lazy('home page')
+    template_name = 'post_templates/delete_post.html'

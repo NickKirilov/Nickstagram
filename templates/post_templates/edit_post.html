@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block page_content %}
-    <h1 class="container row justify-content-center col-md-4 offset-md-4 text-center">Create post</h1>
+    <h1 class="container row justify-content-center col-md-4 offset-md-4 text-center">Edit post</h1>
     <form method="POST" class="container row justify-content-center col-md-6 offset-md-3"
           style="background-color: #b2d8ff" enctype="multipart/form-data">
         {% csrf_token %}
@@ -8,24 +8,24 @@
         <div class="col-md-12 text-center">
             <div class="form-group">
                 <hr>
-                {{ post_form.title.label_tag }}
-                {{ post_form.title }}
+                {{ form.title.label_tag }}
+                {{ form.title }}
             </div>
             <div class="form-group">
-                {{ post_form.description.label_tag }}
-                {{ post_form.description }}
+                {{ form.description.label_tag }}
+                {{ form.description }}
             </div>
             <div class="form-group">
-                {{ post_form.image.label_tag }}
-                {{ post_form.image }}
+                {{ v.image.label_tag }}
+                {{ form.image }}
             </div>
             <div class="form-check">
 
-                {{ post_form.public }}
+                {{ form.public }}
                 <label>Public</label>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary col-md-4 btn-submit" style="margin-right: 3px;">Post</button>
+        <button type="submit" class="btn btn-primary col-md-4 btn-submit" style="margin-right: 3px;">Edit</button>
         <br>
         <a href="{% url 'home page' %}" class="btn btn-primary col-md-4 btn-submit">Go back </a>
         <p></p>

@@ -14,10 +14,13 @@
 
 
                         <p class="card-text text-center">{{ post.description }}</p>
+
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="btn-group">
-                                <a type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                <a type="button" class="btn btn-sm btn-outline-secondary">Delete</a>
+                                {% if user.id == post.profile_id %}
+                                    <a type="button" href="{% url 'post edit page' post.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    <a type="button" href="{% url 'post delete page' post.pk %}" class="btn btn-sm btn-outline-secondary">Delete</a>
+                                {% endif %}
                                 <a type="button" href="{% url 'home page' %}" class="btn btn-sm btn-outline-secondary">Go back</a>
                             </div>
                         </div>

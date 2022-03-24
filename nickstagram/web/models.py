@@ -6,6 +6,11 @@ from nickstagram.accounts.validators import file_max_size_validator
 
 
 class Post(models.Model):
+    MAX_LEN_POST_TITLE = 60
+
+    title = models.CharField(
+        max_length=MAX_LEN_POST_TITLE,
+    )
     description = models.TextField()
 
     image = models.ImageField(
