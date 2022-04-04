@@ -23,15 +23,6 @@
     transform: scale(1.1);
 }
 
-.footer {
-    position: absolute;
-    padding: 10px 10px 0 10px;
-    bottom: 0;
-    width: 100%;
-    height: 40px;
-    background: grey;
-}
-
 .welcome-div {
     height: 20rem;
     width: 100%;
@@ -39,4 +30,15 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+.logo {
+    height: 4rem;
+}
+
+.post-buttons {
+    margin-bottom: 2.8em;
+    position: absolute;
+    bottom: 0;
+    align-self: center;
 }

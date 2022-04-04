@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 
-from nickstagram.accounts.models import NickstagramUser
+from nickstagram.accounts.models import NickstagramUser, Profile
 from nickstagram.accounts.validators import file_max_size_validator
 
 
@@ -30,3 +30,10 @@ class Post(models.Model):
 
     profile = models.ForeignKey(NickstagramUser, on_delete=models.CASCADE)
 
+
+class Comments(models.Model):
+    text = models.TextField()
+
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
