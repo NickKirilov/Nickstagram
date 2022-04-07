@@ -10,7 +10,8 @@ from django.views import generic as views
 from nickstagram.accounts.forms import RegistrationForm, LoginForm, EditProfileForm, CreateProfileForm, \
     DeleteProfileForm
 from nickstagram.accounts.models import Profile
-from nickstagram.web.models import Post
+from nickstagram.web.forms import CommentPostForm
+from nickstagram.web.models import Post, Comments
 
 
 class RegisterView(views.CreateView):
@@ -27,20 +28,44 @@ class RegisterView(views.CreateView):
 class ProfileMoreInfo(views.TemplateView):
     def get(self, request, *args, **kwargs):
         profile = Profile.objects.filter(username=request.user)
-        posts = Post.objects.filter(profile=request.user)
 
         if not profile:
             return redirect('create profile page')
 
+        got_posts = Post.objects.filter(profile=request.user)
+        got_posts = got_posts[::-1]
+        comment_form = CommentPostForm()
+        posts = {}
+
+        for post in got_posts:
+            posts[post] = Comments.objects.filter(post_id=post.pk)
+
         context = {
             'profile': profile[0],
             'posts': posts,
+            'comment_form': comment_form
         }
         return render(
             request,
             "account_templates/profile.html",
             context
         )
+
+    def post(self, request,  *args, **kwargs):
+        comment_form = CommentPostForm(request.POST)
+        post_pk = request.POST.get('post-pk')
+        post = Post.objects.get(pk=post_pk)
+        profile = Profile.objects.get(pk=request.user.pk)
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.creator = profile
+            comment.post = post
+
+            comment.save()
+
+            return redirect('profile page')
+        return redirect('profile page')
 
 
 class UserLoginView(auth_views.LoginView):

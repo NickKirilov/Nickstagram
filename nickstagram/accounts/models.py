@@ -103,7 +103,7 @@ class Profile(models.Model):
         null=True,
         blank=True,
         default='images/profile_imgs/default.png',
-        upload_to='images/uploaded_imgs',
+        upload_to='images/profile_imgs',
     )
 
     user = models.OneToOneField(

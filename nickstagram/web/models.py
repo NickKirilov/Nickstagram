@@ -37,3 +37,12 @@ class Comments(models.Model):
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+class Likes(models.Model):
+    like = models.BooleanField()
+
+    creator = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+

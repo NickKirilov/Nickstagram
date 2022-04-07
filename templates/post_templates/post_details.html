@@ -13,33 +13,62 @@
                              src="/media/{{ post.image }}" alt="post image">
 
 
-                        <p class="card-text text-center">{{ post.description }}</p>
+                        <div class="card-text text-center">
+                            {{ post.description }}
+                            <br>
+                            Likes: {{ likes }}
+
+                        </div>
 
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="btn-group">
-                                {% if user.id == post.profile_id %}
-                                    <a type="button" href="{% url 'post edit page' post.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                    <a type="button" href="{% url 'post delete page' post.pk %}" class="btn btn-sm btn-outline-secondary">Delete</a>
+                                <a type="button" href="{% url 'home page' %}" class="btn btn-sm btn-outline-secondary">Go
+                                    back</a>
+                                {% if user.pk != post.profile.pk and not user_liked %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <input class="btn btn-sm btn-outline-secondary" type="submit" value="Like"
+                                               name="like">
+                                        <label style="display: none">
+                                            <input name="post-pk" value="{{ post.pk }}">
+                                        </label>
+                                    </form>
+                                {% elif user_liked %}
+                                    <form method="post">
+                                        {% csrf_token %}
+
+                                        <input class="btn btn-sm btn-outline-secondary" type="submit" value="Unlike"
+                                               name="unlike">
+                                        <label style="display: none">
+                                            <input name="post-pk" value="{{ post.pk }}">
+                                        </label>
+                                    </form>
                                 {% endif %}
-                                <a type="button" href="{% url 'home page' %}" class="btn btn-sm btn-outline-secondary">Go back</a>
-                                <a type="button" class="btn btn-sm btn-outline-secondary comment">Comment</a>
+
+                                {% if user.id == post.profile_id %}
+
+                                    <a type="button" href="{% url 'post edit page' post.pk %}"
+                                       class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    <a type="button" href="{% url 'post delete page' post.pk %}"
+                                       class="btn btn-sm btn-outline-secondary">Delete</a>
+                                {% endif %}
+
+                                <a type="button" class="btn btn-sm btn-outline-secondary comment-btn">Comment</a>
 
                             </div>
 
                         </div>
-                        <form method="post" id="comment-form" style="display: none">
-                            {% csrf_token %}
-                            {{ comment_form }}
-                            <button id="comment-submit" type="submit">Comment</button>
-                        </form>
+
                     </div>
 
                 </div>
-            {% if comments%}
-                <div class="col-lg-6 justify-content-center">
-                     <div class="card mb-4 box-shadow" style="height: 40rem; width: 100%; overflow: auto;">
+
+                <div id="comments-div" class="col-lg-6 justify-content-center"
+                     style="{% if not comments %} display: none {% endif %}">
+                    <div class="card mb-4 box-shadow" style="height: 40rem; width: 100%; overflow: auto;">
                         <div class="d-flex justify-content-center">
-                            <form class="" method="post" id="comment-form-{{ post.pk }}" style="display: none; margin: 1rem;" >
+                            <form class="form-comment" method="post" id="comment-form-{{ post.pk }}"
+                                  style="display: none; margin: 1rem;">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label>
@@ -56,21 +85,16 @@
                         <div id="comments" style="overflow-wrap: break-word;">
                             {% for comment in comments %}
 
-                                <p class="card-text text-left" style="margin-left: 0.5em;">Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
-                                <h4 class="card-text text-left" style="margin-left: 1em;">{{ comment.text }}</h4>
+                                <p class="card-text text-left" style="margin-left: 0.5em;">
+                                    Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
+                                <h4 id="comment-{{ comment.pk }}" class="card-text text-left comment"
+                                    style="margin-left: 1em;">{{ comment.text }}</h4>
 
                             {% endfor %}
                         </div>
 
-
-
-                        </div>
-
+                    </div>
                 </div>
-            {% endif %}
-
-
-
             </div>
         </div>
     </div>

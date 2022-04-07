@@ -22,63 +22,90 @@
 
                 </div>
             {% endif %}
-        {% for post, comments in posts.items %}
+        {% for post, values in posts.items %}
+
             <div class="row justify-content-center">
 
                     <div class="col-md-6">
                         <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%;">
                             <img class="img-thumbnail" style="width: auto;height: 70%; display: block;"
                                  src="/media/{{ post.image }}" alt="post image">
-                            <p class="card-text text-center">{{ post.title }}</p>
+                            <div class="card-text text-center">
+                                {{ post.title }}
+                                <br>
+                                Likes: {{ values.likes }}
+
+                            </div>
+
 
                             <div class="d-flex justify-content-center post-buttons">
                                 <div class="btn-group">
                                     <a type="button" href="{% url 'post details page' post.pk %}"
                                        class="btn btn-sm btn-outline-secondary">View</a>
+
+                                    {% if profile.pk != post.profile.pk and not values.user_likes %}
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input class="btn btn-sm btn-outline-secondary" type="submit" value="Like" name="like">
+                                            <label style="display: none">
+                                                <input name="post-pk" value="{{ post.pk }}">
+                                            </label>
+                                        </form>
+                                    {% elif values.user_likes %}
+                                        <form method="post">
+                                            {% csrf_token %}
+
+                                            <input class="btn btn-sm btn-outline-secondary" type="submit" value="Unlike" name="unlike">
+                                            <label style="display: none">
+                                                <input name="post-pk" value="{{ post.pk }}">
+                                            </label>
+                                        </form>
+                                    {% endif %}
                                     <a type="button" id="comment-btn-{{ post.pk }}"
-                                       class="btn btn-sm btn-outline-secondary comment">Comment</a>
+                                       class="btn btn-sm btn-outline-secondary comment-btn">Comment</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                    {% if comments %}
+
+
                         <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%; overflow: auto;">
-                        <div class="d-flex justify-content-center">
-                            <form class="" method="post" id="comment-form-{{ post.pk }}" style="display: none; margin: 1rem;" >
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label>
-                                        {{ comment_form.text }}
-                                    </label>
-                                    <label style="display: none">
-                                        <input name="post-pk" value="{{ post.pk }}">
-                                    </label>
+                            <div class="d-flex justify-content-center">
+                                <form class="form-comment" method="post" id="comment-form-{{ post.pk }}" style="display: none; margin: 1rem;" >
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label>
+                                            {{ comment_form.text }}
+                                        </label>
+                                        <label style="display: none">
+                                            <input name="post-pk" value="{{ post.pk }}">
+                                        </label>
+                                    </div>
+
+                                    <button id="comment-submit" type="submit">Comment</button>
+                                </form>
+                            </div>
+
+                        {% if values.comments %}
+                                <div id="comments" style="overflow-wrap: break-word;">
+                                    {% for comment in values.comments %}
+
+                                        <p class="card-text text-left" style="margin-left: 0.5em;">Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
+                                        <h4 class="card-text text-left" style="margin-left: 1em;">{{ comment.text }}</h4>
+
+                                    {% endfor %}
                                 </div>
-
-                                <button id="comment-submit" type="submit">Comment</button>
-                            </form>
-                        </div>
-                        <div id="comments" style="overflow-wrap: break-word;">
-                            {% for comment in comments %}
-
-                                <p class="card-text text-left" style="margin-left: 0.5em;">Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
-                                <h4 class="card-text text-left" style="margin-left: 1em;">{{ comment.text }}</h4>
-
-                            {% endfor %}
                         </div>
 
-
-
-                        </div>
-                    </div>
-                    {% else %}
-                        <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%; overflow: auto;">
-                            <div id="comments" style="position: absolute; align-self: center; top: 11rem;">
+                        {% else %}
+                            <div id="comments" style="position: relative; align-self: center; top: 11rem;">
                                 <h3 class="card-text text-left">Be the first to comment!</h3>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+
+                    </div>
+
 
             </div>
         {% endfor %}

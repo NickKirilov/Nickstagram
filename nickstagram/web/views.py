@@ -1,14 +1,11 @@
-from django.contrib.auth import get_user, login
-from django.contrib.auth.views import LoginView
-from django.contrib.messages import views as msg_views
+from django.contrib.auth import get_user
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
-
 from nickstagram.accounts.models import Profile
 from nickstagram.web.forms import CreatePostForm, EditPostForm, DeletePostForm, CommentPostForm
-from nickstagram.web.models import Post, Comments
+from nickstagram.web.models import Post, Comments, Likes
 
 
 class IndexView(views.TemplateView):
@@ -26,7 +23,16 @@ class IndexView(views.TemplateView):
                 .filter(Q(profile=self.request.user) | Q(public=True))
             got_posts = got_posts[::-1]
             for post in got_posts:
-                posts[post] = Comments.objects.filter(post_id=post.pk)
+                likes = Likes.objects.filter(post_id=post.pk)
+                posts[post] = {'comments': Comments.objects.filter(post_id=post.pk),
+                               'likes': len(Likes.objects.filter(post_id=post.pk)),
+                               'user_likes': False}
+
+                for like in likes:
+                    if like.creator.pk == profile[0].pk:
+                        posts[post]['user_likes'] = True
+
+            profile = profile[0]
 
         else:
             posts = {}
@@ -44,15 +50,33 @@ class IndexView(views.TemplateView):
         post_pk = request.POST.get('post-pk')
         post = Post.objects.get(pk=post_pk)
         profile = Profile.objects.get(pk=request.user.pk)
+        likes = Likes.objects.filter(post_id=post.pk)
 
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.creator = profile
             comment.post = post
-
             comment.save()
 
-            return redirect('home page')
+        if request.POST.get('like'):
+            for like in likes:
+                if like.creator.pk == profile.pk:
+                    return redirect('home page')
+
+            new_like = Likes()
+            new_like.post = post
+            new_like.creator = profile
+            new_like.like = True
+
+            new_like.save()
+            return redirect('post details page', post.pk)
+
+        if request.POST.get('unlike'):
+            for like in likes:
+                if like.creator.pk == profile.pk:
+                    like.delete()
+            return redirect('post details page', post.pk)
+
         return redirect('home page')
 
 
@@ -90,12 +114,20 @@ class PostDetailsView(views.View):
         post = Post.objects.get(pk=pk)
         comment_form = CommentPostForm()
         comments = Comments.objects.filter(post_id=post.pk)
+        likes = Likes.objects.filter(post_id=post.pk)
+        user_liked = False
+
+        for like in likes:
+            if like.creator.pk == request.user.pk:
+                user_liked = True
 
         context = {
             'post': post,
             'user': request.user,
             'comment_form': comment_form,
             'comments': comments,
+            'likes': len(likes),
+            'user_liked': user_liked,
         }
 
         return render(request, 'post_templates/post_details.html', context)
@@ -104,6 +136,7 @@ class PostDetailsView(views.View):
         comment_form = CommentPostForm(request.POST)
         post = Post.objects.get(pk=self.kwargs['pk'])
         profile = Profile.objects.get(pk=request.user.pk)
+        likes = Likes.objects.filter(post_id=post.pk)
 
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -112,7 +145,24 @@ class PostDetailsView(views.View):
 
             comment.save()
 
+        if request.POST.get('like'):
+            for like in likes:
+                if like.creator.pk == profile.pk:
+                    return redirect('post details page', post.pk)
+            new_like = Likes()
+            new_like.post = post
+            new_like.creator = profile
+            new_like.like = True
+
+            new_like.save()
             return redirect('post details page', post.pk)
+
+        if request.POST.get('unlike'):
+            for like in likes:
+                if like.creator.pk == profile.pk:
+                    like.delete()
+            return redirect('post details page', post.pk)
+
         return redirect('post details page', post.pk)
 
 
