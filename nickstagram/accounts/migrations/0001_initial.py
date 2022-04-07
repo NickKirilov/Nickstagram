@@ -4,7 +4,7 @@ from django.conf import settings
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
-import nickstagram.accounts.validators
+import nickstagram.common_utils.validators
 
 
 class Migration(migrations.Migration):
@@ -37,12 +37,14 @@ class Migration(migrations.Migration):
             name='Profile',
             fields=[
                 ('username', models.CharField(max_length=20, unique=True, validators=[django.core.validators.RegexValidator('[a-z\\_0-9]+', 'The username must contains only lowercase letters, underscores and numbers!'), django.core.validators.MinLengthValidator(4, 'The username must be at least 4 characters long.')])),
-                ('first_name', models.CharField(max_length=30, validators=[nickstagram.accounts.validators.validate_first_name, django.core.validators.MinLengthValidator(2, 'The first name must be at least 2 characters long.')])),
-                ('last_name', models.CharField(max_length=30, validators=[nickstagram.accounts.validators.validate_last_name, django.core.validators.MinLengthValidator(2, 'The first name must be at least 2 characters long.')])),
+                ('first_name', models.CharField(max_length=30, validators=[nickstagram.common_utils.validators.validate_first_name, django.core.validators.MinLengthValidator(2, 'The first name must be at least 2 characters long.')])),
+                ('last_name', models.CharField(max_length=30, validators=[nickstagram.common_utils.validators.validate_last_name, django.core.validators.MinLengthValidator(2, 'The first name must be at least 2 characters long.')])),
                 ('email', models.EmailField(max_length=60)),
-                ('date_of_birth', models.DateField(validators=[nickstagram.accounts.validators.validate_date_of_birth])),
+                ('date_of_birth', models.DateField(validators=[
+                    nickstagram.common_utils.validators.validate_date_of_birth])),
                 ('gender', models.CharField(blank=True, choices=[('Male', 'Male'), ('Female', 'Female'), ('Do not show', 'Do not show')], default='Do not show', max_length=11, null=True)),
-                ('image', models.ImageField(blank=True, default='images/profile_imgs/default.png', null=True, upload_to='images/uploaded_imgs', validators=[nickstagram.accounts.validators.file_max_size_validator])),
+                ('image', models.ImageField(blank=True, default='images/profile_imgs/default.png', null=True, upload_to='images/uploaded_imgs', validators=[
+                    nickstagram.common_utils.validators.file_max_size_validator])),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
             ],
         ),

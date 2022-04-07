@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, AbstractUser
 from django.db import models
 
 from nickstagram.accounts.models import NickstagramUser, Profile
-from nickstagram.accounts.validators import file_max_size_validator
+from nickstagram.common_utils.validators import file_max_size_validator
 
 
 class Post(models.Model):

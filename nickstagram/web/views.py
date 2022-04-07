@@ -1,14 +1,18 @@
 from django.contrib.auth import get_user
+from django.contrib.auth import mixins as auth_mixins
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
+
 from nickstagram.accounts.models import Profile
 from nickstagram.web.forms import CreatePostForm, EditPostForm, DeletePostForm, CommentPostForm
 from nickstagram.web.models import Post, Comments, Likes
 
 
-class IndexView(views.TemplateView):
+class IndexView(views.TemplateView, auth_mixins.LoginRequiredMixin):
+    login_url = '/account/login/'
+
     def get(self, *args, **kwargs):
         profile = Profile.objects.filter(username=self.request.user)
 
@@ -24,7 +28,7 @@ class IndexView(views.TemplateView):
             got_posts = got_posts[::-1]
             for post in got_posts:
                 likes = Likes.objects.filter(post_id=post.pk)
-                posts[post] = {'comments': Comments.objects.filter(post_id=post.pk),
+                posts[post] = {'comments': Comments.objects.filter(post_id=post.pk)[::-1],
                                'likes': len(Likes.objects.filter(post_id=post.pk)),
                                'user_likes': False}
 
@@ -80,7 +84,9 @@ class IndexView(views.TemplateView):
         return redirect('home page')
 
 
-class CreatePostView(views.View):
+class CreatePostView(auth_mixins.LoginRequiredMixin, views.CreateView):
+    model = Post
+
     def get(self, request, *args, **kwargs):
         post_form = CreatePostForm()
         context = {
@@ -109,7 +115,7 @@ class CreatePostView(views.View):
         return render(request, "account_templates/create_profile.html", context)
 
 
-class PostDetailsView(views.View):
+class PostDetailsView(auth_mixins.LoginRequiredMixin, views.View):
     def get(self, request,  pk, *args, **kwargs):
         post = Post.objects.get(pk=pk)
         comment_form = CommentPostForm()
@@ -166,7 +172,7 @@ class PostDetailsView(views.View):
         return redirect('post details page', post.pk)
 
 
-class EditPostView(views.UpdateView):
+class EditPostView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     template_name = 'post_templates/edit_post.html'
     form_class = EditPostForm
     model = Post
@@ -176,7 +182,7 @@ class EditPostView(views.UpdateView):
         return success_url
 
 
-class DeletePostView(views.DeleteView):
+class DeletePostView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     form_class = DeletePostForm
     model = Post
     success_url = reverse_lazy('home page')

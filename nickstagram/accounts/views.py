@@ -1,9 +1,9 @@
 from django.contrib.auth import login, get_user
 from django.contrib.auth import views as auth_views
 from django.shortcuts import render, redirect
+from django.contrib.auth import mixins as auth_mixins
 
 
-# Create your views here.
 from django.urls import reverse_lazy
 from django.views import generic as views
 
@@ -11,7 +11,7 @@ from nickstagram.accounts.forms import RegistrationForm, LoginForm, EditProfileF
     DeleteProfileForm
 from nickstagram.accounts.models import Profile
 from nickstagram.web.forms import CommentPostForm
-from nickstagram.web.models import Post, Comments
+from nickstagram.web.models import Post, Comments, Likes
 
 
 class RegisterView(views.CreateView):
@@ -25,7 +25,7 @@ class RegisterView(views.CreateView):
         return result
 
 
-class ProfileMoreInfo(views.TemplateView):
+class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
     def get(self, request, *args, **kwargs):
         profile = Profile.objects.filter(username=request.user)
 
@@ -39,6 +39,8 @@ class ProfileMoreInfo(views.TemplateView):
 
         for post in got_posts:
             posts[post] = Comments.objects.filter(post_id=post.pk)
+            posts[post] = {'comments': Comments.objects.filter(post_id=post.pk)[::-1],
+                           'likes': len(Likes.objects.filter(post_id=post.pk))}
 
         context = {
             'profile': profile[0],
@@ -76,7 +78,7 @@ class UserLoginView(auth_views.LoginView):
         return reverse_lazy('home page')
 
 
-class EditProfileView(views.UpdateView):
+class EditProfileView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     def get(self, request, *args, **kwargs):
         profile = Profile.objects.filter(username=request.user)[0]
         profile_form = EditProfileForm(instance=profile)
@@ -109,7 +111,7 @@ class EditProfileView(views.UpdateView):
         return render(request, "account_templates/edit_profile.html", context)
 
 
-class CreateProfileView(views.CreateView):
+class CreateProfileView(auth_mixins.LoginRequiredMixin, views.CreateView):
     def get(self, request, *args, **kwargs):
         profile_form = CreateProfileForm()
 
@@ -139,7 +141,7 @@ class CreateProfileView(views.CreateView):
         return render(request, "account_templates/create_profile.html", context)
 
 
-class DeleteProfileView(views.DeleteView):
+class DeleteProfileView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     def get(self, request, *args, **kwargs):
         return render(request, 'account_templates/delete_profile.html')
 

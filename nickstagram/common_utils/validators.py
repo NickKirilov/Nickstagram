@@ -23,12 +23,11 @@ def file_max_size_validator(value):
 
 
 def validate_first_name(value):
-    pattern = r'[A-Za-z]+'
     first_name_error_pattern_message = 'The first name must contains only letters.'
 
-    matches = re.findall(pattern, value)
-    if len(matches) != 1:
-        raise ValidationError(first_name_error_pattern_message)
+    for ch in value:
+        if not ch.isalpha():
+            raise ValidationError(first_name_error_pattern_message)
 
 
 def validate_last_name(value):

@@ -2,7 +2,7 @@ from django.core.validators import MinLengthValidator, RegexValidator
 from django.db import models
 from django.contrib.auth import models as auth_models
 from nickstagram.accounts.managers import NickstagramUserManager
-from nickstagram.accounts.validators import file_max_size_validator, validate_date_of_birth, validate_last_name, \
+from nickstagram.common_utils.validators import file_max_size_validator, validate_date_of_birth, validate_last_name, \
     validate_first_name
 
 
@@ -109,5 +109,8 @@ class Profile(models.Model):
     user = models.OneToOneField(
         NickstagramUser,
         on_delete=models.CASCADE,
-        primary_key=True
+        primary_key=True,
     )
+
+    def __str__(self):
+        return self.username

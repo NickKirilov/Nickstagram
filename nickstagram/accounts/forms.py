@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import forms as auth_forms
 
 from nickstagram.accounts.models import Profile, NickstagramUser
-from nickstagram.accounts.validators import validate_date_of_birth
+from nickstagram.common_utils.validators import validate_date_of_birth
 
 
 class RegistrationForm(auth_forms.UserCreationForm):

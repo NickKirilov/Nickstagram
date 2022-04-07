@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 {% block page_content %}
 
-    <h1>Show Profile</h1>
-    {{ profile.first_name }} {{ profile.last_name }}
-    <br>
-
-
-
-
     <div class="album py-5 bg-light">
         <div class="container">
 
@@ -35,16 +28,6 @@
                             </div>
                         </div>
 
-
-                        {##}
-                        {#                            <div class="d-flex justify-content-center post-buttons">#}
-                        {#                                <div class="btn-group">#}
-                        {#                                    <a type="button" href="{% url 'post details page' post.pk %}"#}
-                        {#                                       class="btn btn-sm btn-outline-secondary">View</a>#}
-                        {#                                    <a type="button" id="comment-btn-{{ post.pk }}"#}
-                        {#                                       class="btn btn-sm btn-outline-secondary comment-btn">Comment</a>#}
-                        {#                                </div>#}
-                        {#                            </div>#}
                     </div>
                 </div>
 
@@ -52,19 +35,47 @@
             </div>
 
 
-            {% for post, comments in posts.items %}
+            {% for post, values in posts.items %}
+
                 <div class="row justify-content-center">
 
                     <div class="col-md-6">
                         <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%;">
                             <img class="img-thumbnail" style="width: auto;height: 70%; display: block;"
                                  src="/media/{{ post.image }}" alt="post image">
-                            <p class="card-text text-center">{{ post.title }}</p>
+                            <div class="card-text text-center">
+                                {{ post.title }}
+                                <br>
+                                Likes: {{ values.likes }}
+
+                            </div>
+
 
                             <div class="d-flex justify-content-center post-buttons">
                                 <div class="btn-group">
                                     <a type="button" href="{% url 'post details page' post.pk %}"
                                        class="btn btn-sm btn-outline-secondary">View</a>
+
+                                    {% if profile.pk != post.profile.pk and not values.user_likes %}
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input class="btn btn-sm btn-outline-secondary" type="submit" value="Like"
+                                                   name="like">
+                                            <label style="display: none">
+                                                <input name="post-pk" value="{{ post.pk }}">
+                                            </label>
+                                        </form>
+                                    {% elif values.user_likes %}
+                                        <form method="post">
+                                            {% csrf_token %}
+
+                                            <input class="btn btn-sm btn-outline-secondary" type="submit" value="Unlike"
+                                                   name="unlike">
+                                            <label style="display: none">
+                                                <input name="post-pk" value="{{ post.pk }}">
+                                            </label>
+                                        </form>
+                                    {% endif %}
                                     <a type="button" id="comment-btn-{{ post.pk }}"
                                        class="btn btn-sm btn-outline-secondary comment-btn">Comment</a>
                                 </div>
@@ -73,9 +84,10 @@
                     </div>
                     <div class="col-md-6">
 
+
                         <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%; overflow: auto;">
                             <div class="d-flex justify-content-center">
-                                <form class="" method="post" id="comment-form-{{ post.pk }}"
+                                <form class="form-comment" method="post" id="comment-form-{{ post.pk }}"
                                       style="display: none; margin: 1rem;">
                                     {% csrf_token %}
                                     <div class="form-group">
@@ -91,9 +103,9 @@
                                 </form>
                             </div>
 
-                            {% if comments %}
+                            {% if values.comments %}
                                 <div id="comments" style="overflow-wrap: break-word;">
-                                    {% for comment in comments %}
+                                    {% for comment in values.comments %}
 
                                         <p class="card-text text-left" style="margin-left: 0.5em;">
                                             Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
@@ -115,25 +127,24 @@
 
                 </div>
             {% endfor %}
-
         </div>
     </div>
-<script>
-var coll = document.getElementsByClassName("collapsible");
-var i;
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
 
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.display === "block") {
-      content.style.display = "none";
-    } else {
-      content.style.display = "block";
-    }
-  });
-}
-</script>
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
 
 
 

@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import nickstagram.accounts.validators
+import nickstagram.common_utils.validators
 
 
 class Migration(migrations.Migration):
@@ -21,7 +21,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_of_creation', models.DateField(auto_created=True)),
                 ('description', models.TextField()),
-                ('image', models.ImageField(upload_to='images/uploaded_post_images', validators=[nickstagram.accounts.validators.file_max_size_validator])),
+                ('image', models.ImageField(upload_to='images/uploaded_post_images', validators=[
+                    nickstagram.common_utils.validators.file_max_size_validator])),
                 ('profile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
