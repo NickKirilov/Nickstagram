@@ -14,12 +14,14 @@ LOGOUT_REDIRECT_URL = reverse_lazy('home page')
 SECRET_KEY = 'django-insecure-=04d^$$)tc!xli-v5_7nbas=szbgva4m+15q(kshws$*qns15z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+print(DEBUG)
+# ALLOWED_HOSTS = [
+#     '127.0.0.1',
+#     'nickstagram.herokuapp.com',
+# ]
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'nickstagram.herokuapp.com',
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
 # Application definition
 
