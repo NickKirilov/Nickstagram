@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import cloudinary
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
@@ -138,6 +139,12 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+cloudinary.config(
+  cloud_name="he8x6xl32",
+  api_key="637762111759485",
+  api_secret="LdhmIS2W3uf6WqW9BKFhTSj3lio"
+)
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
