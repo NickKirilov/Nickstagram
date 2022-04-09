@@ -3,6 +3,9 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
@@ -32,6 +35,8 @@ INSTALLED_APPS = [
 
     'nickstagram.web',
     'nickstagram.accounts',
+
+    'cloudinary',
 ]
 
 SITE_ID = 1
