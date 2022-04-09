@@ -19,7 +19,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost:8000',
-    'https://nickstagram.herokuapp.com',
+    'nickstagram.herokuapp.com',
 ]
 
 # Application definition
