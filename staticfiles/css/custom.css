@@ -24,7 +24,6 @@
 .welcome-div {
     height: 20rem;
     width: 100%;
-    background-image: url("../images/welcome.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
