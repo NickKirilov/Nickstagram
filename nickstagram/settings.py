@@ -3,23 +3,19 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOGOUT_REDIRECT_URL = reverse_lazy('home page')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
+load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=04d^$$)tc!xli-v5_7nbas=szbgva4m+15q(kshws$*qns15z'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-print(DEBUG)
-# ALLOWED_HOSTS = [
-#     '127.0.0.1',
-#     'nickstagram.herokuapp.com',
-# ]
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
@@ -90,10 +86,10 @@ WSGI_APPLICATION = 'nickstagram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd5ufhve9q24fk7',
-        'USER': 'fsoyptpzctewgd',
-        'PASSWORD': '363cf06266d0d580d565b9a3f309c10106478f24597f82019a162082c627d849',
-        'HOST': 'ec2-52-18-116-67.eu-west-1.compute.amazonaws.com',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
         'PORT': '5432',
     }
 }
@@ -104,19 +100,19 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': os.getenv('SIMILARITY_VALIDATOR'),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': os.getenv('MINIMUM_LENGTH_VALIDATOR'),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': os.getenv('COMMON_PASSWORD_VALIDATOR'),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': os.getenv('NUMERIC_PASSWORD_VALIDATOR'),
     },
     {
-        'NAME': 'nickstagram.common_utils.validators.ValidatePassword',
+        'NAME': os.getenv('VALIDATE_PASSWORD'),
     },
 ]
 
