@@ -16,7 +16,11 @@ SECRET_KEY = 'django-insecure-=04d^$$)tc!xli-v5_7nbas=szbgva4m+15q(kshws$*qns15z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost:8000',
+    'https://nickstagram.herokuapp.com',
+]
 
 # Application definition
 
