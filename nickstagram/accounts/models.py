@@ -1,8 +1,9 @@
+from cloudinary import models as cloudinary_models
 from django.core.validators import MinLengthValidator, RegexValidator
 from django.db import models
 from django.contrib.auth import models as auth_models
 from nickstagram.accounts.managers import NickstagramUserManager
-from nickstagram.common_utils.validators import file_max_size_validator, validate_date_of_birth, validate_last_name, \
+from nickstagram.common_utils.validators import validate_date_of_birth, validate_last_name, \
     validate_first_name
 
 
@@ -96,15 +97,7 @@ class Profile(models.Model):
         default=DON_NOT_SHOW,
     )
 
-    image = models.ImageField(
-        validators=(
-            file_max_size_validator,
-        ),
-        null=True,
-        blank=True,
-        default='images/profile_imgs/default.png',
-        upload_to='images/profile_imgs',
-    )
+    image = cloudinary_models.CloudinaryField('image')
 
     user = models.OneToOneField(
         NickstagramUser,

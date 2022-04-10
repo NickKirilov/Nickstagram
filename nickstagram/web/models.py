@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User, AbstractUser
 from django.db import models
-
+from cloudinary import models as cloudinary_models
 from nickstagram.accounts.models import NickstagramUser, Profile
-from nickstagram.common_utils.validators import file_max_size_validator
 
 
 class Post(models.Model):
@@ -13,12 +12,7 @@ class Post(models.Model):
     )
     description = models.TextField()
 
-    image = models.ImageField(
-        validators=(
-            file_max_size_validator,
-        ),
-        upload_to='images/uploaded_post_images',
-    )
+    image = cloudinary_models.CloudinaryField('image')
 
     date_of_creation = models.DateTimeField(
         auto_now_add=True,
