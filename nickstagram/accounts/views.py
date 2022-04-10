@@ -34,14 +34,17 @@ class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
 
         got_posts = Post.objects.filter(profile=request.user)
         got_posts = got_posts[::-1]
-        comment_form = CommentPostForm()
+
         posts = {}
 
         for post in got_posts:
             posts[post] = Comments.objects.filter(post_id=post.pk)
             posts[post] = {'comments': Comments.objects.filter(post_id=post.pk)[::-1],
                            'likes': len(Likes.objects.filter(post_id=post.pk))}
-
+        if posts:
+            comment_form = CommentPostForm()
+        else:
+            comment_form = None
         context = {
             'profile': profile[0],
             'posts': posts,
@@ -56,13 +59,16 @@ class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
     def post(self, request,  *args, **kwargs):
         comment_form = CommentPostForm(request.POST)
         post_pk = request.POST.get('post-pk')
-        post = Post.objects.get(pk=post_pk)
+        post = Post.objects.filter(pk=post_pk)
         profile = Profile.objects.get(pk=request.user.pk)
 
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.creator = profile
-            comment.post = post
+            if post:
+                comment.post = post[0]
+            else:
+                return redirect('profile page')
 
             comment.save()
 
