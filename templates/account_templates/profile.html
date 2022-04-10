@@ -10,11 +10,10 @@
                     <div class="card mb-4" style="height: 18rem;">
                         <div>
                             <div class="profile-image-div">
-                                <img class="profile-image-details" src="/media/{{ profile.image }}" alt="profile image">
+                                <img class="profile-image-details" src="{{ profile.image.url }}" alt="profile image">
                             </div>
                             <div class="profile-details-div">
                                 <h4>@{{ profile.username }}</h4>
-
                                 <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
 
                             </div>
@@ -42,7 +41,7 @@
                     <div class="col-md-6">
                         <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%;">
                             <img class="img-thumbnail" style="width: auto;height: 70%; display: block;"
-                                 src="/media/{{ post.image }}" alt="post image">
+                                 src="{{ post.image.url }}" alt="post image">
                             <div class="card-text text-center">
                                 {{ post.title }}
                                 <br>

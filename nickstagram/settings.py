@@ -146,9 +146,9 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 cloudinary.config(
-  cloud_name="he8x6xl32",
-  api_key="637762111759485",
-  api_secret="LdhmIS2W3uf6WqW9BKFhTSj3lio"
+  cloud_name=os.getenv('CLOUD_NAME'),
+  api_key=os.getenv('API_KEY'),
+  api_secret=os.getenv('API_SECRET')
 )
 
 MEDIA_URL = 'media/'

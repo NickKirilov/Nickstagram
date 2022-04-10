@@ -132,7 +132,7 @@ class CreateProfileView(auth_mixins.LoginRequiredMixin, views.CreateView):
             if img in request.FILES:
                 profile.image = request.FILES[img]
             else:
-                profile.image = 'media/images/profile_imgs/default.png'
+                profile.image = 'images/profile_imgs/default.png'
             profile.save()
 
             return redirect('home page')

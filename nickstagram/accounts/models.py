@@ -97,7 +97,12 @@ class Profile(models.Model):
         default=DON_NOT_SHOW,
     )
 
-    image = cloudinary_models.CloudinaryField('image')
+    image = cloudinary_models.CloudinaryField(
+        'image',
+        blank=True,
+        null=True,
+        default='image/upload/v1649599331/default_gzreya.png',
+    )
 
     user = models.OneToOneField(
         NickstagramUser,
