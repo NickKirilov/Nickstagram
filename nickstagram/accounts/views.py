@@ -158,3 +158,4 @@ class DeleteProfileView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         profile_form = DeleteProfileForm(request.POST, request.FILES, instance=profile)
         profile_form.save()
         return redirect('home page')
+
