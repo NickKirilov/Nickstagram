@@ -86,7 +86,13 @@ class UserLoginView(auth_views.LoginView):
 
 class EditProfileView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     def get(self, request, *args, **kwargs):
-        profile = Profile.objects.filter(username=request.user)[0]
+        profile = Profile.objects.filter(username=request.user)
+
+        if profile:
+            profile = profile[0]
+        else:
+            return redirect('home page')
+
         profile_form = EditProfileForm(instance=profile)
 
         context = {
@@ -96,20 +102,18 @@ class EditProfileView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         return render(request, "account_templates/edit_profile.html", context)
 
     def post(self, request, *args, **kwargs):
-        profile = Profile.objects.filter(username=request.user)[0]
+        profile = Profile.objects.filter(username=self.request.user)[0]
         profile_form = EditProfileForm(request.POST, request.FILES, instance=profile)
-        if 'image' in request.FILES and profile.image != 'images/profile_imgs/default.png':
-            profile.image.delete()
 
         if profile_form.is_valid():
 
-            edited_profile = profile_form.save(commit=False)
+            profile = profile_form.save(commit=False)
             img = 'image'
             if img in request.FILES:
-                edited_profile.image = request.FILES[img]
+                profile.image = request.FILES[img]
 
-            edited_profile.save()
-            return redirect('home page')
+            profile.save()
+            return redirect('profile page')
 
         context = {
             'profile_form': profile_form,
@@ -137,8 +141,6 @@ class CreateProfileView(auth_mixins.LoginRequiredMixin, views.CreateView):
             img = 'image'
             if img in request.FILES:
                 profile.image = request.FILES[img]
-            else:
-                profile.image = 'images/profile_imgs/default.png'
             profile.save()
 
             return redirect('home page')
