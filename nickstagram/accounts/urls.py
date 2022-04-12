@@ -7,9 +7,9 @@ from nickstagram.accounts.views import UserLoginView, RegisterView, ProfileMoreI
 urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login page'),
     path('register/', RegisterView.as_view(), name='register page'),
-    path('profile/', ProfileMoreInfo.as_view(), name='profile page'),
-    path('profile/edit/', EditProfileView.as_view(), name='edit profile page'),
-    path('profile/logout/', LogoutView.as_view(), name='logout page'),
+    path('profile/<int:pk>/', ProfileMoreInfo.as_view(), name='profile page'),
+    path('profile/edit/<int:pk>/', EditProfileView.as_view(), name='edit profile page'),
+    path('profile/logout/<int:pk>/', LogoutView.as_view(), name='logout page'),
     path('profile/create/', CreateProfileView.as_view(), name='create profile page'),
-    path('profile/delete/', DeleteProfileView.as_view(), name='delete profile page'),
+    path('profile/delete/<int:pk>/', DeleteProfileView.as_view(), name='delete profile page'),
 ]

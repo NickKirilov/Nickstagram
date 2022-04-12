@@ -68,12 +68,12 @@ class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
             if post:
                 comment.post = post[0]
             else:
-                return redirect('profile page')
+                return redirect('profile page', kwargs['pk'])
 
             comment.save()
 
-            return redirect('profile page')
-        return redirect('profile page')
+            return redirect('profile page', kwargs['pk'])
+        return redirect('profile page', kwargs['pk'])
 
 
 class UserLoginView(auth_views.LoginView):
@@ -113,7 +113,7 @@ class EditProfileView(auth_mixins.LoginRequiredMixin, views.UpdateView):
                 profile.image = request.FILES[img]
 
             profile.save()
-            return redirect('profile page')
+            return redirect('profile page', kwargs['pk'])
 
         context = {
             'profile_form': profile_form,

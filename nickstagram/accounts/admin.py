@@ -1,5 +1,14 @@
 from django.contrib import admin
 from nickstagram.accounts.models import Profile, NickstagramUser
 
-admin.site.register(NickstagramUser)
-admin.site.register(Profile)
+
+class NicktagramUserAdmin(admin.ModelAdmin):
+    pass
+
+
+class ProfileAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(NickstagramUser, NicktagramUserAdmin)
+admin.site.register(Profile, ProfileAdmin)

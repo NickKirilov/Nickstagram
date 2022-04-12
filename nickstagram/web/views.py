@@ -11,8 +11,6 @@ from nickstagram.web.models import Post, Comments, Likes
 
 
 class IndexView(views.TemplateView, auth_mixins.LoginRequiredMixin):
-    login_url = '/account/login/'
-
     def get(self, *args, **kwargs):
         profile = Profile.objects.filter(username=self.request.user)
 
@@ -187,3 +185,21 @@ class DeletePostView(auth_mixins.LoginRequiredMixin, views.DeleteView):
     model = Post
     success_url = reverse_lazy('home page')
     template_name = 'post_templates/delete_post.html'
+
+
+class SearchView(auth_mixins.LoginRequiredMixin, views.ListView):
+    model = Profile
+    template_name = 'search.html'
+
+    def get_queryset(self):
+        result = super(SearchView, self).get_queryset()
+        query = self.request.GET.get('q')
+        if query:
+            post_result = Profile.objects.filter(
+                Q(first_name__contains=query) | Q(last_name__contains=query) | Q(username__contains=query)
+            )
+            result = post_result
+        else:
+            result = None
+        return result
+

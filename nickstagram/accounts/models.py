@@ -110,5 +110,10 @@ class Profile(models.Model):
         primary_key=True,
     )
 
+    friends = models.TextField(
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return self.username

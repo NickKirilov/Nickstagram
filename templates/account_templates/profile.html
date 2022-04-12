@@ -19,11 +19,11 @@
                             </div>
                             <button type="button" class="collapsible">&#128516</button>
                             <div class="content" style="float: right;">
-                                <a class="button" href="{% url 'logout page' %}">Log Out</a>
+                                <a class="button" href="{% url 'logout page' request.user.pk %}">Log Out</a>
                                 <br>
-                                <a href="{% url 'edit profile page' %}">Edit your details</a>
+                                <a href="{% url 'edit profile page' request.user.pk %}">Edit your details</a>
                                 <br>
-                                <a href="{% url 'delete profile page' %}">Delete your account</a>
+                                <a href="{% url 'delete profile page' request.user.pk %}">Delete your account</a>
                             </div>
                         </div>
 

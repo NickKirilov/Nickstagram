@@ -11,7 +11,7 @@
                 <hr>
                 {{ profile_form.image.label }}:
                 <br>
-                <img class="profile-image" src="{{ profile_form.image.url }}" alt="profile-image">
+                    <img class="profile-image" src="{{ profile_form.image.url }}" alt="profile-image">
                 <br>
 
                 <input type="file" name="{{ profile_form.image.name }}" value="{{ profile_form.image.value }}"
@@ -46,7 +46,7 @@
 
 
             <button type="submit" class="btn btn-primary col-md-4 btn-submit">Edit your details</button>
-            <a href="{% url 'profile page' %}" class="btn btn-primary col-md-4 btn-submit">Go back </a>
+            <a href="{% url 'profile page' request.user.pk %}" class="btn btn-primary col-md-4 btn-submit">Go back </a>
 
             <hr>
         </div>

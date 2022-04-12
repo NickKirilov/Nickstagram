@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block page_content %}
+
+    <h1 class="container row justify-content-center col-md-4 offset-md-4">Search</h1>
+    <form method="GET" action="{% url 'search page' %}" class="container row justify-content-center col-md-4 offset-md-4" style="background-color: #b2d8ff">
+        {% csrf_token %}
+        <div class="col-md-12 text-center">
+            <div class="text-center ">
+                <div class="form-group text-center" style="margin-top: 1.5rem">
+                    <label>
+                        <input name="q" type="text" placeholder="Search...">
+                    </label>
+
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary col-md-4 submit">Search</button>
+            <hr>
+        </div>
+    </form>
+
+    {{ object_list }}
+{% endblock %}

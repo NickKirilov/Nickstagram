@@ -12,7 +12,7 @@
             </form>
             <hr>
             <button style="border-radius: 20%;">
-                <a href="{% url 'profile page' %}" class="card-link" >
+                <a href="{% url 'profile page' request.user.pk %}" class="card-link" >
                     Get back to my profile details
                 </a>
             </button>
