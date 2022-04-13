@@ -33,6 +33,19 @@
 
             </div>
 
+        {% if not posts %}
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%; overflow: auto;">
+                        <div id="comments" style="position: relative; align-self: center; top: 11rem; align-items: center">
+                            <h3 class="card-text text-left">Create your first post!</h3>
+                             <a type="button" href="{% url 'create post page' %}" class="btn btn-primary col-lg-6 submit">Create Post</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
 
             {% for post, values in posts.items %}
 

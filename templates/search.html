@@ -2,7 +2,7 @@
 {% block page_content %}
 
     <h1 class="container row justify-content-center col-md-4 offset-md-4">Search</h1>
-    <form method="GET" action="{% url 'search page' %}" class="container row justify-content-center col-md-4 offset-md-4" style="background-color: #b2d8ff">
+    <form method="GET" action="{% url 'search page' %}" class="container row justify-content-center col-md-4 offset-md-4" style="margin-bottom: 2rem;background-color: #b2d8ff">
         {% csrf_token %}
         <div class="col-md-12 text-center">
             <div class="text-center ">
@@ -19,5 +19,31 @@
         </div>
     </form>
 
-    {{ object_list }}
+
+
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%; overflow: auto;">
+                <div id="comments" style="position: relative; align-self: center; top: 11rem; align-items: center">
+                <ul style="list-style: none">
+                    {% for item in object_list  %}
+                        <li>
+                            {{ item }}
+
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="person-to-follow" value="{{ item.pk }}">
+                                    <input class="btn btn-primary col-md-12 submit" type="submit" value="Follow">
+                                </form>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}

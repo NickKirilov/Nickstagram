@@ -11,7 +11,7 @@
                 <hr>
                 {{ profile_form.image.label }}:
                 <br>
-                    <img class="profile-image" src="{{ profile_form.image.url }}" alt="profile-image">
+                    <img class="profile-image" src="{{ profile_form.image.value.url }}" alt="profile-image">
                 <br>
 
                 <input type="file" name="{{ profile_form.image.name }}" value="{{ profile_form.image.value }}"

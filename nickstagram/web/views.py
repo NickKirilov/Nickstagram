@@ -191,6 +191,10 @@ class SearchView(auth_mixins.LoginRequiredMixin, views.ListView):
     model = Profile
     template_name = 'search.html'
 
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     profile = Profile.objects.get(pk=self.request.user.pk)
+    #     super(SearchView, self).get_context_data(kwargs={'profile': profile})
+
     def get_queryset(self):
         result = super(SearchView, self).get_queryset()
         query = self.request.GET.get('q')
@@ -201,5 +205,16 @@ class SearchView(auth_mixins.LoginRequiredMixin, views.ListView):
             result = post_result
         else:
             result = None
+
         return result
+
+    def post(self, *args, **kwargs):
+        profile = Profile.objects.get(pk=self.request.user.pk)
+        person_to_follow = self.request.POST.get('person-to-follow')
+
+        if person_to_follow not in profile.friends.split(' '):
+            profile.friends += person_to_follow + ' '
+            profile.save()
+
+        return redirect('search page')
 

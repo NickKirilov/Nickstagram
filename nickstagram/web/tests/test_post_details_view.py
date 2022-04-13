@@ -1,16 +1,14 @@
 import datetime
-
 from django import test as django_test
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-
 from nickstagram.accounts.models import Profile
 from nickstagram.web.models import Post, Comments, Likes
 
 UserModel = get_user_model()
 
 
-class ProfileDetailsViewTests(django_test.TestCase):
+class PostDetailsViewTests(django_test.TestCase):
     VALID_USER_INFO = {
         'username': 'testuser',
         'password': '20042004Nk',
@@ -31,14 +29,6 @@ class ProfileDetailsViewTests(django_test.TestCase):
     @staticmethod
     def __create_profile(**data):
         return Profile.objects.create(**data)
-
-    def test_redirecting_to_create_profile_page_if_no_profile_but_authenticated_user(self):
-        user = self.__create_user(**self.VALID_USER_INFO)
-        self.client.login(**self.VALID_USER_INFO)
-
-        response = self.client.get(reverse('home page'))
-
-        self.assertRedirects(response, '/account/profile/create/')
 
     def test_showing_all_posts_which_are_public_or_are_owned_by_the_user_or_someone_of_his_friends(self):
         user = self.__create_user(**self.VALID_USER_INFO)
@@ -64,10 +54,10 @@ class ProfileDetailsViewTests(django_test.TestCase):
             post=post
         )
 
-        response = self.client.get(reverse('home page'))
+        response = self.client.get(reverse('post details page', kwargs={'pk': post.pk}))
 
-        self.assertEqual(1, len(response.context['posts'][post]['comments']))
-        self.assertEqual(1, response.context['posts'][post]['likes'])
+        self.assertEqual(1, len(response.context['comments']))
+        self.assertEqual(1, response.context['likes'])
 
     def test_commenting_a_post__expect_success(self):
         user = self.__create_user(**self.VALID_USER_INFO)
@@ -81,7 +71,7 @@ class ProfileDetailsViewTests(django_test.TestCase):
             profile=user
         )
 
-        self.client.post(reverse('home page'), data={
+        self.client.post(reverse('post details page', kwargs={'pk': poster.pk}), data={
             'text': 'Testing...',
             'post-pk': poster.pk,
         })
@@ -100,7 +90,7 @@ class ProfileDetailsViewTests(django_test.TestCase):
             profile=user
         )
 
-        response = self.client.post(reverse('home page'), data={
+        response = self.client.post(reverse('post details page', kwargs={'pk': poster.pk}), data={
             'like': 'Testing...',
             'post-pk': poster.pk,
         })
@@ -126,7 +116,7 @@ class ProfileDetailsViewTests(django_test.TestCase):
             post=poster
         )
 
-        response = self.client.post(reverse('home page'), data={
+        response = self.client.post(reverse('post details page', kwargs={'pk': poster.pk}), data={
             'unlike': 'Testing...',
             'post-pk': poster.pk,
         })
@@ -134,7 +124,7 @@ class ProfileDetailsViewTests(django_test.TestCase):
         self.assertEqual(0, len(Likes.objects.filter(post=poster.pk)))
         self.assertRedirects(response, f'/post/details/{poster.pk}/')
 
-    def test_redirecting_to_home_page_if_nothing_had_posted(self):
+    def test_redirecting_to_post_details_page_if_nothing_had_posted(self):
         user = self.__create_user(**self.VALID_USER_INFO)
         profile = self.__create_profile(**self.VALID_PROFILE_DATA, user=user)
         self.client.login(**self.VALID_USER_INFO)
@@ -146,8 +136,8 @@ class ProfileDetailsViewTests(django_test.TestCase):
             profile=user
         )
 
-        response = self.client.post(reverse('home page'), data={
+        response = self.client.post(reverse('post details page', kwargs={'pk': poster.pk}), data={
             'post-pk': poster.pk,
         })
 
-        self.assertRedirects(response, '/')
+        self.assertRedirects(response, f'/post/details/{poster.pk}/')
