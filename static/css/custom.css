@@ -1,0 +1,114 @@
+
+.profile-image {
+    width: 10rem;
+    border-radius: 50%;
+    transition: all .2s ease-in-out;
+    margin-bottom: 0.3em;
+    margin-top: 0.3em;
+
+}
+
+.profile-image:hover {
+    opacity: 100%;
+    transition: opacity 2s;
+    transform: scale(1.1);
+
+}
+
+.btn-submit:hover {
+    opacity: 100%;
+    transition: opacity 2s;
+    transform: scale(1.1);
+}
+
+.welcome-div {
+    height: 20rem;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.logo {
+    height: 4rem;
+}
+
+.post-buttons {
+    margin-bottom: 2.8em;
+    position: absolute;
+    bottom: -1em;
+    align-self: center;
+}
+
+.profile-image-details {
+    width: auto;
+    transition: all .2s ease-in-out;
+    margin-left: -5em;
+    height: 100%;
+}
+
+.profile-image-div {
+    display: inline-block;
+    position: relative;
+    width: 12em;
+    height: 12em;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 0.3em 0.3em 0 5em;
+    float: left;
+}
+
+.profile-image-details:hover {
+    opacity: 100%;
+    transition: opacity 2s;
+    transform: scale(1.1);
+
+}
+
+.profile-details-div {
+    margin-top: 1em;
+    margin-left: 18em;
+    width: 20em;
+}
+
+.collapsible {
+    background-color: #b2d8ff;
+    color: white;
+    cursor: pointer;
+    padding: 0.55rem;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    float: right;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    position: absolute;
+    top: 8px;
+    right: 0.5em;
+}
+
+.active, .collapsible:hover {
+    background-color: #1136FF;
+}
+
+.content {
+    padding: 0.5em;
+    display: none;
+    overflow: hidden;
+    background-color: #1136FF;
+    position: absolute;
+    top: 3em;
+    right: 0.5em;
+}
+
+.content a {
+    background-color: #b2d8ff;
+    border-radius: 5%;
+    color: black;
+    font-weight: bold;
+    padding: 1px 3px;
+
+
+}
