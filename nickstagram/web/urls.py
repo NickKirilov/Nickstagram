@@ -9,4 +9,5 @@ urlpatterns = [
 
     path('search/', SearchView.as_view(), name='search page')
 
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,6 +4,10 @@ from nickstagram.accounts.models import NickstagramUser
 
 
 class Post(models.Model):
+
+    class Meta:
+        ordering = ('-date_of_creation',)
+
     MAX_LEN_POST_TITLE = 60
 
     title = models.CharField(

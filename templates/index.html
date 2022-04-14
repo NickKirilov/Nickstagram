@@ -73,7 +73,7 @@
                                             </label>
                                         </form>
                                     {% endif %}
-                                    <a type="button" id="comment-btn-{{ post.pk }}"
+                                    <a type="button" href="{% url 'comment post page' post.pk %}" id="comment-btn-{{ post.pk }}"
                                        class="btn btn-sm btn-outline-secondary comment-btn">Comment</a>
                                 </div>
                             </div>
@@ -83,30 +83,31 @@
 
 
                         <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%; overflow: auto;">
-                            <div class="d-flex justify-content-center">
-                                <form class="form-comment" method="post" id="comment-form-{{ post.pk }}" style="display: none; margin: 1rem;" >
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label>
-                                            {{ comment_form.text }}
-                                        </label>
-                                        <label style="display: none">
-                                            <input name="post-pk" value="{{ post.pk }}">
-                                        </label>
-                                    </div>
 
-                                    <button id="comment-submit" type="submit">Comment</button>
-                                </form>
-                            </div>
 
                         {% if values.comments %}
                                 <div id="comments" style="overflow-wrap: break-word;">
                                     {% for comment in values.comments %}
+                                        <div>
+                                            {% if comment.creator.pk == request.user.pk %}
+                                                <button type="button" class="collapsible">
+                                                    .
+                                                    .
+                                                    .
+                                                </button>
+                                                <div class="content" style="float: right;">
+                                                    <a class="button" href="{% url 'edit comment page' comment.pk %}">Edit comment</a>
+                                                    <br>
+                                                    <a href="{% url 'delete comment page' comment.pk %}">Delete</a>
+                                                </div>
+                                            {% endif %}
+                                            <p class="card-text text-left" style="margin-left: 0.5em;">Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
+                                            <h4 class="card-text text-left" style="margin-left: 1em;">{{ comment.text }}</h4>
 
-                                        <p class="card-text text-left" style="margin-left: 0.5em;">Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
-                                        <h4 class="card-text text-left" style="margin-left: 1em;">{{ comment.text }}</h4>
+                                        </div>
 
                                     {% endfor %}
+
                                 </div>
                         </div>
 

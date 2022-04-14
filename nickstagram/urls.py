@@ -10,6 +10,7 @@ urlpatterns = [
     path('', include('nickstagram.web.urls')),
     path('account/', include('nickstagram.accounts.urls')),
     path('posts/', include('nickstagram.posts.urls')),
+    path('comment/', include('nickstagram.comments.urls')),
     path(
         "favicon.ico",
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),

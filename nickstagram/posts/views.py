@@ -4,10 +4,11 @@ from django.contrib.auth import mixins as auth_mixins
 from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 from nickstagram.accounts.models import Profile
+from nickstagram.comments.forms import CommentPostForm
+from nickstagram.comments.models import Comments
 from nickstagram.posts.forms import CreatePostForm, EditPostForm, DeletePostForm
 from nickstagram.posts.models import Post
-from nickstagram.web.forms import CommentPostForm
-from nickstagram.web.models import Comments, Likes
+from nickstagram.web.models import Likes
 
 
 class CreatePostView(auth_mixins.LoginRequiredMixin, views.CreateView):

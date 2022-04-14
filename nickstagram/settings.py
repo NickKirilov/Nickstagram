@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'nickstagram.web',
     'nickstagram.accounts',
     'nickstagram.posts',
+    'nickstagram.comments',
 
     'cloudinary',
 ]

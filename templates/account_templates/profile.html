@@ -15,10 +15,11 @@
                             <div class="profile-details-div">
                                 <h4>@{{ profile.username }}</h4>
                                 <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
+                                <h5>Following: {{ friends }}</h5>
 
                             </div>
-                            <button type="button" class="collapsible">&#128516</button>
-                            <div class="content" style="float: right;">
+                            <button type="button" class="collapsible" style="position: absolute; float: right; top: 0.5em">. . .</button>
+                            <div class="content" style="position: absolute;">
                                 <a class="button" href="{% url 'logout page' request.user.pk %}">Log Out</a>
                                 <br>
                                 <a href="{% url 'edit profile page' request.user.pk %}">Edit your details</a>
@@ -119,6 +120,17 @@
                                 <div id="comments" style="overflow-wrap: break-word;">
                                     {% for comment in values.comments %}
 
+                                        <button type="button" class="collapsible">
+                                            .
+                                            .
+                                            .
+                                        </button>
+                                        <div class="content" style="float: right;">
+                                            <a class="button" href="{% url 'edit comment page' comment.pk %}">Edit comment</a>
+                                            <br>
+                                            <a href="{% url 'delete comment page' comment.pk %}">Delete</a>
+                                        </div>
+
                                         <p class="card-text text-left" style="margin-left: 0.5em;">
                                             Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
                                         <h4 class="card-text text-left"
@@ -141,23 +153,6 @@
             {% endfor %}
         </div>
     </div>
-    <script>
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }
-    </script>
-
 
 
 {% endblock %}

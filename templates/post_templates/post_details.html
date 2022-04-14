@@ -53,7 +53,8 @@
                                        class="btn btn-sm btn-outline-secondary">Delete</a>
                                 {% endif %}
 
-                                <a type="button" class="btn btn-sm btn-outline-secondary comment-btn">Comment</a>
+                                <a type="button" href="{% url 'comment post page' post.pk %}"
+                                   class="btn btn-sm btn-outline-secondary comment-btn">Comment</a>
 
                             </div>
 
@@ -63,35 +64,38 @@
 
                 </div>
 
-                <div id="comments-div" class="col-lg-6 justify-content-center"
-                     style="{% if not comments %} display: none {% endif %}">
+                <div id="comments-div" class="col-lg-6 justify-content-center">
                     <div class="card mb-4 box-shadow" style="height: 40rem; width: 100%; overflow: auto;">
-                        <div class="d-flex justify-content-center">
-                            <form class="form-comment" method="post" id="comment-form-{{ post.pk }}"
-                                  style="display: none; margin: 1rem;">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label>
-                                        {{ comment_form.text }}
-                                    </label>
-                                    <label style="display: none">
-                                        <input name="post-pk" value="{{ post.pk }}">
-                                    </label>
-                                </div>
 
-                                <button id="comment-submit" type="submit">Comment</button>
-                            </form>
-                        </div>
                         <div id="comments" style="overflow-wrap: break-word;">
                             {% for comment in comments %}
-
+                                {% if comment.creator.pk == request.user.pk %}
+                                    <button type="button" class="collapsible">
+                                        .
+                                        .
+                                        .
+                                    </button>
+                                    <div class="content" style="float: right;">
+                                        <a class="button" href="{% url 'edit comment page' comment.pk %}">Edit comment</a>
+                                        <br>
+                                        <a href="{% url 'delete comment page' comment.pk %}">Delete</a>
+                                    </div>
+                                {% endif %}
                                 <p class="card-text text-left" style="margin-left: 0.5em;">
                                     Commented: {{ comment.creator.first_name }} {{ comment.creator.last_name }}</p>
                                 <h4 id="comment-{{ comment.pk }}" class="card-text text-left comment"
                                     style="margin-left: 1em;">{{ comment.text }}</h4>
 
                             {% endfor %}
+
                         </div>
+                        {% if not comments %}
+
+                            <div id="comments" style="position: relative; align-self: center; top: 11rem;">
+                                <h3 class="card-text text-left">Be the first to comment!</h3>
+                            </div>
+
+                        {% endif %}
 
                     </div>
                 </div>

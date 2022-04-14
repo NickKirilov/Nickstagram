@@ -2,16 +2,14 @@ from django.contrib.auth import login, get_user
 from django.contrib.auth import views as auth_views
 from django.shortcuts import render, redirect
 from django.contrib.auth import mixins as auth_mixins
-
-
 from django.urls import reverse_lazy
 from django.views import generic as views
-
 from nickstagram.accounts.forms import RegistrationForm, LoginForm, EditProfileForm, CreateProfileForm, \
     DeleteProfileForm
 from nickstagram.accounts.models import Profile
-from nickstagram.web.forms import CommentPostForm
-from nickstagram.web.models import Post, Comments, Likes
+from nickstagram.comments.forms import CommentPostForm
+from nickstagram.comments.models import Comments
+from nickstagram.web.models import Post, Likes
 
 
 class RegisterView(views.CreateView):
@@ -32,6 +30,8 @@ class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
         if not profile:
             return redirect('create profile page')
 
+        profile = profile[0]
+
         got_posts = Post.objects.filter(profile=request.user)
         got_posts = got_posts[::-1]
 
@@ -41,14 +41,13 @@ class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
             posts[post] = Comments.objects.filter(post_id=post.pk)
             posts[post] = {'comments': Comments.objects.filter(post_id=post.pk)[::-1],
                            'likes': len(Likes.objects.filter(post_id=post.pk))}
-        if posts:
-            comment_form = CommentPostForm()
-        else:
-            comment_form = None
+
+        friends = len(profile.friends.split(' ')) - 1
+
         context = {
-            'profile': profile[0],
+            'profile': profile,
             'posts': posts,
-            'comment_form': comment_form
+            'friends': friends
         }
         return render(
             request,

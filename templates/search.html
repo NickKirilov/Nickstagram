@@ -26,6 +26,7 @@
             <div class="card mb-4 box-shadow" style="height: 25rem; width: 100%; overflow: auto;">
                 <div id="comments" style="position: relative; align-self: center; top: 11rem; align-items: center">
                 <ul style="list-style: none">
+
                     {% for item in object_list  %}
                         <li>
                             {{ item }}
@@ -39,6 +40,9 @@
                         </li>
                     {% endfor %}
                 </ul>
+                {% if not object_list %}
+                    <h4>Nothing has found!</h4>
+                {% endif %}
                 </div>
             </div>
         </div>

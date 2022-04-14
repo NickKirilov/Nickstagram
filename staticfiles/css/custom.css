@@ -84,7 +84,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    position: absolute;
+    position: relative;
     top: 8px;
     right: 0.5em;
 }
@@ -98,7 +98,7 @@
     display: none;
     overflow: hidden;
     background-color: #1136FF;
-    position: absolute;
+    position: sticky;
     top: 3em;
     right: 0.5em;
 }
@@ -109,6 +109,4 @@
     color: black;
     font-weight: bold;
     padding: 1px 3px;
-
-
 }

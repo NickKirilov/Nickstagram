@@ -1,10 +1,12 @@
 from django.db import models
-from nickstagram.accounts.models import NickstagramUser, Profile
+
+# Create your models here.
+from nickstagram.accounts.models import Profile
 from nickstagram.posts.models import Post
 
 
-class Likes(models.Model):
-    like = models.BooleanField()
+class Comments(models.Model):
+    text = models.TextField()
 
     creator = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
@@ -12,4 +14,3 @@ class Likes(models.Model):
 
     def __str__(self):
         return self.post.title
-
