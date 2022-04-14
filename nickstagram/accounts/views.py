@@ -56,7 +56,8 @@ class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
             context
         )
 
-    def post(self, request,  *args, **kwargs):
+    @staticmethod
+    def post(request, *args, **kwargs):
         comment_form = CommentPostForm(request.POST)
         post_pk = request.POST.get('post-pk')
         post = Post.objects.filter(pk=post_pk)
@@ -160,4 +161,3 @@ class DeleteProfileView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         profile_form = DeleteProfileForm(request.POST, request.FILES, instance=profile)
         profile_form.save()
         return redirect('home page')
-

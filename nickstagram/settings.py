@@ -1,11 +1,9 @@
 import os
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
@@ -37,6 +35,7 @@ INSTALLED_APPS = [
 
     'nickstagram.web',
     'nickstagram.accounts',
+    'nickstagram.posts',
 
     'cloudinary',
 ]
@@ -60,8 +59,7 @@ ROOT_URLCONF = 'nickstagram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
