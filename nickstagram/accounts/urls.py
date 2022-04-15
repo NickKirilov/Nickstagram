@@ -1,6 +1,5 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-
 from nickstagram.accounts.views import UserLoginView, RegisterView, ProfileMoreInfo, EditProfileView, CreateProfileView, \
     DeleteProfileView, ChangePasswordView, ForgottenPasswordView
 

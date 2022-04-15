@@ -81,6 +81,7 @@ class Profile(models.Model):
 
     email = models.EmailField(
         max_length=EMAIL_MAX_LEN,
+        unique=True,
     )
 
     date_of_birth = models.DateField(
