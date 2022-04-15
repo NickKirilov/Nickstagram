@@ -5,24 +5,13 @@
     <form method="POST" class="container row justify-content-center col-md-4 offset-md-4" style="background-color: #b2d8ff">
         {% csrf_token %}
         <div class="col-md-12 text-center">
-            <div class="text-center ">
-                <div class="form-group text-center">
-                    <hr>
-                    {{ form.username.label_tag }}
-                    {{ form.username }}
-                    {{ form.username.errors }}
-                </div>
-            </div>
-            <div class="text-center">
-                <div class="form-group text-center">
-                    {{ form.password.label_tag }}
-                    {{ form.password }}
-                    {{ form.password.errors }}
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary col-md-4 submit">Login</button>
             <hr>
+            {{ form }}
+
+
+            <button style="margin-top: 1em" type="submit" class="btn btn-primary col-md-4 submit">Login</button>
+            <hr>
+            <a href="{% url 'send password' %}" type="button" style="margin-bottom: 1em" class="btn btn-primary">Reset password.</a>
             <a href="{% url 'register page' %}" type="button" style="margin-bottom: 1em" class="btn btn-primary">I don't have an account, yet.</a>
 
         </div>

@@ -1,5 +1,4 @@
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
 
@@ -72,12 +71,7 @@ class EditCommentView(auth_mixins.LoginRequiredMixin, views.UpdateView):
         return redirect('post details page', post[0].pk)
 
 
-# class DeleteCommentView(auth_mixins.LoginRequiredMixin, views.DeleteView):
-#     model = Comments
-#     success_url = reverse_lazy('home page')
-
 def delete_comment(request, pk):
     comment = Comments.objects.get(pk=pk)
     comment.delete()
     return redirect('home page')
-

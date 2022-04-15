@@ -1,5 +1,11 @@
-from django.contrib.auth import login, get_user
+import random
+
+from django.contrib.auth import login, get_user, get_user_model
 from django.contrib.auth import views as auth_views
+from django.contrib import messages
+from django.contrib.auth.hashers import get_hasher, check_password, make_password
+from django.core.mail import send_mail, send_mass_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import mixins as auth_mixins
 from django.urls import reverse_lazy
@@ -10,6 +16,8 @@ from nickstagram.accounts.models import Profile
 from nickstagram.comments.forms import CommentPostForm
 from nickstagram.comments.models import Comments
 from nickstagram.web.models import Post, Likes
+
+UserModel = get_user_model()
 
 
 class RegisterView(views.CreateView):
@@ -42,7 +50,10 @@ class ProfileMoreInfo(auth_mixins.LoginRequiredMixin, views.TemplateView):
             posts[post] = {'comments': Comments.objects.filter(post_id=post.pk)[::-1],
                            'likes': len(Likes.objects.filter(post_id=post.pk))}
 
-        friends = len(profile.friends.split(' ')) - 1
+        if profile.friends:
+            friends = len(profile.friends.split(' ')) - 1
+        else:
+            friends = 0
 
         context = {
             'profile': profile,
@@ -160,3 +171,61 @@ class DeleteProfileView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         profile_form = DeleteProfileForm(request.POST, request.FILES, instance=profile)
         profile_form.save()
         return redirect('home page')
+
+
+class ChangePasswordView(views.UpdateView, auth_mixins.LoginRequiredMixin):
+    model = UserModel
+    template_name = 'account_templates/reset_password.html'
+    fields = ('password',)
+
+    def post(self, request, *args, **kwargs):
+        old_password = request.POST.get('old-password')
+        new_password = request.POST.get('new-password')
+        user = self.request.user
+        algorithm, salt, sha1_hash = user.password.split('$', 2)
+        hasher = get_hasher(algorithm)
+
+        if hasher.verify(old_password, user.password):
+            try:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'Successful change of password!')
+                return redirect('profile page', user.pk)
+            except:
+                return HttpResponse('Invalid new password! It must contain at least 8 characters, includes numbers, '
+                                    'upper and lower letters!')
+        else:
+            messages.warning(request, 'The provided old password is not the same!')
+            return redirect('profile page', user.pk)
+
+
+class ForgottenPasswordView(views.View):
+    @staticmethod
+    def get(request, *args, **kwargs):
+        return render(request, 'account_templates/sending_email_for_new_password.html')
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        try:
+            username = request.POST.get('username')
+            user = UserModel.objects.get(username=username)
+            profile = Profile.objects.get(username=username)
+        except:
+            messages.warning(request, 'Username is not correct!')
+            return redirect('home page')
+
+        new_password = ''.join(str(random.randint(1, 1000)) for _ in range(8))
+        new_password += username[0].upper() + username[1]
+
+        user.set_password(new_password)
+        user.save()
+
+        message = (
+            'Forgotten password',
+            f'This is your password: {new_password} || after logining with it change it!',
+            'garaj.garaj.garaj@gmail.com',
+            [profile.email]
+        )
+
+        send_mass_mail((message, ), fail_silently=False)
+        return redirect('login page')
