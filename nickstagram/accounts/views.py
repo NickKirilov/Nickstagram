@@ -226,6 +226,9 @@ class ForgottenPasswordView(views.View):
             'garaj.garaj.garaj@gmail.com',
             [profile.email]
         )
-
-        send_mass_mail((message, ), fail_silently=False)
+        try:
+            send_mass_mail((message, ), fail_silently=False)
+        except:
+            messages.warning(request, "Something gone wrong!")
+            return redirect('login page')
         return redirect('login page')
