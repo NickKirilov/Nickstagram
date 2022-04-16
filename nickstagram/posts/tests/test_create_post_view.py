@@ -59,4 +59,4 @@ class CreatePostViewTests(django_test.TestCase):
         else:
             raise Exception('Not post created')
 
-        self.assertRedirects(response, f'/post/details/{post.pk}/')
+        self.assertRedirects(response, f'/posts/details/{post.pk}/')

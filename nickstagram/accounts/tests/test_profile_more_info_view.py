@@ -5,7 +5,8 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from nickstagram.accounts.models import Profile
-from nickstagram.web.models import Post, Comments, Likes
+from nickstagram.comments.models import Comments
+from nickstagram.web.models import Post, Likes
 
 UserModel = get_user_model()
 
@@ -33,14 +34,17 @@ class ProfileDetailsViewTests(django_test.TestCase):
         return Profile.objects.create(**data)
 
     def test_correct_template__expect_profile_page_template(self):
-        response = self.client.get(reverse('profile page'))
+        user = self.__create_user(**self.VALID_USER_INFO)
+        profile = self.__create_profile(**self.VALID_PROFILE_DATA, user=user)
+        response = self.client.get(reverse('profile page', kwargs={'pk': profile.pk}))
 
         self.assertTemplateUsed("account_templates/profile.html")
 
     def test_when_there_is_not_an_user__expect_redirect_to_login_page(self):
-        response = self.client.get(reverse('profile page'))
+        user = self.__create_user(**self.VALID_USER_INFO)
+        response = self.client.get(reverse('profile page', kwargs={'pk': user.pk}))
 
-        self.assertEqual('/account/login/?next=/account/profile/', response.url)
+        self.assertEqual(f'/account/login/?next=/account/profile/{user.pk}/', response.url)
 
     def test_when_no_posts__should_not_have_any_posts(self):
         user = self.__create_user(**self.VALID_USER_INFO)
@@ -48,10 +52,9 @@ class ProfileDetailsViewTests(django_test.TestCase):
                                         user=user)
 
         self.client.login(**self.VALID_USER_INFO)
-        response = self.client.get(reverse('profile page'))
+        response = self.client.get(reverse('profile page', kwargs={'pk': user.pk}))
 
         self.assertEqual({}, response.context['posts'])
-        self.assertIsNone(response.context['comment_form'])
 
     def test_when_there_are_posts__should_have_posts_but_without_comments_and_likes(self):
         user = self.__create_user(**self.VALID_USER_INFO)
@@ -65,7 +68,7 @@ class ProfileDetailsViewTests(django_test.TestCase):
             image='images/default.png',
             profile=user
         )
-        response = self.client.get(reverse('profile page'))
+        response = self.client.get(reverse('profile page', kwargs={'pk': user.pk}))
 
         self.assertEqual(1, len(response.context['posts']))
 
@@ -86,7 +89,7 @@ class ProfileDetailsViewTests(django_test.TestCase):
             creator=profile,
             post=post
         )
-        response = self.client.get(reverse('profile page'))
+        response = self.client.get(reverse('profile page', kwargs={'pk': user.pk}))
         comments = response.context['posts'][post]['comments']
         self.assertEqual(1, len(comments))
 
@@ -108,7 +111,7 @@ class ProfileDetailsViewTests(django_test.TestCase):
             post=post
         )
         like = Likes.objects.create(like=True, creator=profile, post=post)
-        response = self.client.get(reverse('profile page'))
+        response = self.client.get(reverse('profile page', kwargs={'pk': user.pk}))
         comments = response.context['posts'][post]['comments']
         likes = response.context['posts'][post]['likes']
         self.assertEqual(1, len(comments))
@@ -118,36 +121,9 @@ class ProfileDetailsViewTests(django_test.TestCase):
     def test_when_no_profile__should_redirect_to_create_profile_page(self):
         user = self.__create_user(**self.VALID_USER_INFO)
         self.client.login(**self.VALID_USER_INFO)
-        response = self.client.get(reverse('profile page'))
+        response = self.client.get(reverse('profile page', kwargs={'pk': user.pk}))
 
-        self.assertEqual('/account/profile/create/', response.url)
+        self.assertEqual(f'/account/profile/create/', response.url)
 
-    def test_commenting_the_correct_post(self):
-        user = self.__create_user(**self.VALID_USER_INFO)
-        profile = self.__create_profile(**self.VALID_PROFILE_DATA,
-                                        user=user)
 
-        self.client.login(**self.VALID_USER_INFO)
-        Post.objects.create(
-            title='Test',
-            description='Testing...',
-            image='images/default.png',
-            profile=user
-        )
-        Post.objects.create(
-            title='Test',
-            description='Testing...',
-            image='images/default.png',
-            profile=user
-        )
-
-        response = self.client.post(reverse('profile page'), data={
-            "text": ["testing"],
-            "post-pk": 1
-        })
-        post_context = self.client.get(reverse('profile page')).context['posts']
-
-        self.assertEqual("{<Post: Post object (2)>: {'comments': [], 'likes': 0}, <Post: Post object (1)>: {"
-                         "'comments': [<Comments: Comments object (1)>], 'likes': 0}}",
-                         str(post_context))
 

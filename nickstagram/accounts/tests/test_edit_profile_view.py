@@ -32,7 +32,9 @@ class EditProfileViewTests(django_test.TestCase):
         return Profile.objects.create(**data)
 
     def test_correct_template__expect_edit_profile_page_template(self):
-        response = self.client.get(reverse('edit profile page'))
+        user = self.__create_user(**self.VALID_USER_INFO)
+        profile = self.__create_profile(**self.VALID_PROFILE_DATA, user=user)
+        response = self.client.get(reverse('edit profile page', kwargs={'pk': profile.pk}))
 
         self.assertTemplateUsed("account_templates/edit_profile.html")
 
@@ -40,7 +42,7 @@ class EditProfileViewTests(django_test.TestCase):
         user = self.__create_user(**self.VALID_USER_INFO)
         self.client.login(**self.VALID_USER_INFO)
 
-        response = self.client.get(reverse('edit profile page'))
+        response = self.client.get(reverse('edit profile page', kwargs={'pk': user.pk}))
 
         self.assertEqual('/', response.url)
 
@@ -49,12 +51,12 @@ class EditProfileViewTests(django_test.TestCase):
         profile = self.__create_profile(**self.VALID_PROFILE_DATA, user=user)
         self.client.login(**self.VALID_USER_INFO)
 
-        self.client.get(reverse('edit profile page'))
-        response = self.client.post(reverse('edit profile page'), data={
+        self.client.get(reverse('edit profile page', kwargs={'pk': profile.pk}))
+        response = self.client.post(reverse('edit profile page', kwargs={'pk': profile.pk}), data={
             **self.VALID_PROFILE_DATA,
             'image': 'image/test.png',
         })
 
         profile.refresh_from_db()
 
-        self.assertRedirects(response, '/account/profile/')
+        self.assertRedirects(response, f'/account/profile/{profile.pk}/')

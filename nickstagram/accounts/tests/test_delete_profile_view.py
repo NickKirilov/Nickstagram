@@ -36,6 +36,6 @@ class DeleteProfileViewTests(django_test.TestCase):
         profile = self.__create_profile(**self.VALID_PROFILE_DATA, user=user)
         self.client.login(**self.VALID_USER_INFO)
 
-        response = self.client.post(reverse('delete profile page'))
+        response = self.client.post(reverse('delete profile page', kwargs={'pk': profile.pk}))
 
         self.assertRedirects(response, '/')

@@ -3,7 +3,9 @@ from django import test as django_test
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from nickstagram.accounts.models import Profile
-from nickstagram.web.models import Post, Comments, Likes
+from nickstagram.comments.models import Comments
+from nickstagram.posts.models import Post
+from nickstagram.web.models import Likes
 
 UserModel = get_user_model()
 
@@ -59,25 +61,6 @@ class PostDetailsViewTests(django_test.TestCase):
         self.assertEqual(1, len(response.context['comments']))
         self.assertEqual(1, response.context['likes'])
 
-    def test_commenting_a_post__expect_success(self):
-        user = self.__create_user(**self.VALID_USER_INFO)
-        profile = self.__create_profile(**self.VALID_PROFILE_DATA, user=user)
-        self.client.login(**self.VALID_USER_INFO)
-
-        poster = Post.objects.create(
-            title='Test',
-            description='Testing...',
-            image='tests/test.png',
-            profile=user
-        )
-
-        self.client.post(reverse('post details page', kwargs={'pk': poster.pk}), data={
-            'text': 'Testing...',
-            'post-pk': poster.pk,
-        })
-
-        self.assertEqual(1, len(Comments.objects.filter(post=poster.pk)))
-
     def test_liking_a_post_and_redirecting_to_post_view__expect_success(self):
         user = self.__create_user(**self.VALID_USER_INFO)
         profile = self.__create_profile(**self.VALID_PROFILE_DATA, user=user)
@@ -96,7 +79,7 @@ class PostDetailsViewTests(django_test.TestCase):
         })
 
         self.assertEqual(1, len(Likes.objects.filter(post=poster.pk)))
-        self.assertRedirects(response, f'/post/details/{poster.pk}/')
+        self.assertRedirects(response, f'/posts/details/{poster.pk}/')
 
     def test_disliking_a_post__expect_success(self):
         user = self.__create_user(**self.VALID_USER_INFO)
@@ -122,7 +105,7 @@ class PostDetailsViewTests(django_test.TestCase):
         })
 
         self.assertEqual(0, len(Likes.objects.filter(post=poster.pk)))
-        self.assertRedirects(response, f'/post/details/{poster.pk}/')
+        self.assertRedirects(response, f'/posts/details/{poster.pk}/')
 
     def test_redirecting_to_post_details_page_if_nothing_had_posted(self):
         user = self.__create_user(**self.VALID_USER_INFO)
@@ -140,4 +123,4 @@ class PostDetailsViewTests(django_test.TestCase):
             'post-pk': poster.pk,
         })
 
-        self.assertRedirects(response, f'/post/details/{poster.pk}/')
+        self.assertRedirects(response, f'/posts/details/{poster.pk}/')
