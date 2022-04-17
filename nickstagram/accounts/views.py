@@ -5,7 +5,6 @@ from django.contrib.auth import views as auth_views
 from django.contrib import messages
 from django.contrib.auth.hashers import get_hasher
 from django.core.mail import send_mass_mail
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import mixins as auth_mixins
 from django.urls import reverse_lazy
@@ -194,8 +193,10 @@ class ChangePasswordView(auth_mixins.LoginRequiredMixin, views.UpdateView):
                 messages.success(request, 'Successful change of password!')
                 return redirect('profile page', user.pk)
             except:
-                return HttpResponse('Invalid new password! It must contain at least 8 characters, includes numbers, '
-                                    'upper and lower letters!')
+                messages.warning(request,
+                                 'Invalid new password! It must contain at least 8 characters, includes numbers, '
+                                 'upper and lower letters!')
+                return redirect('profile page', user.pk)
         else:
             messages.warning(request, 'The provided old password is not the same!')
             return redirect('profile page', user.pk)
@@ -229,7 +230,7 @@ class ForgottenPasswordView(views.View):
             [profile.email]
         )
         try:
-            send_mass_mail((message, ), fail_silently=False)
+            send_mass_mail((message,), fail_silently=False)
         except:
             messages.warning(request, "Something gone wrong!")
             return redirect('login page')
