@@ -1,4 +1,5 @@
 web: gunicorn nickstagram.wsgi
 release: python manage.py migrate
-main_worker: python manage.py celery worker --beat --loglevel=info
+worker: python manage.py celery worker --loglevel=info
+celery_beat: python manage.py celery beat --loglevel=info
 
