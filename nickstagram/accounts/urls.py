@@ -3,6 +3,7 @@ from django.urls import path
 from nickstagram.accounts.views import UserLoginView, RegisterView, ProfileMoreInfo, EditProfileView, CreateProfileView, \
     DeleteProfileView, ChangePasswordView, ForgottenPasswordView
 
+
 urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login page'),
     path('register/', RegisterView.as_view(), name='register page'),

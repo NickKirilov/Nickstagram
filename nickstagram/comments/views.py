@@ -46,7 +46,12 @@ class EditCommentView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     template_name = 'comment_templates/edit_comment.html'
 
     def get_context_data(self, **kwargs):
-        comment = Comments.objects.get(pk=self.kwargs['pk'])
+        comment = Comments.objects.filter(pk=self.kwargs['pk'])
+        if comment:
+            comment = comment[0]
+        else:
+            redirect('home page')
+
         post = comment.post
         likes = Likes.objects.filter(post=post)
         return super(EditCommentView, self).get_context_data(**{'post': post, 'likes': len(likes)})
@@ -54,21 +59,27 @@ class EditCommentView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     def post(self, request, *args, **kwargs):
         post_pk = int(request.POST.get('post-pk'))
         post = Post.objects.filter(pk=post_pk)
+        comment = Comments.objects.filter(pk=kwargs['pk'])
         if post:
             post = post[0]
         else:
             return redirect('home page')
 
-        form_data = EditCommentForm(request.POST, instance=post)
+        if comment:
+            comment = comment[0]
+        else:
+            return redirect('post details page', post.pk)
+
+        form_data = EditCommentForm(request.POST, instance=comment)
         profile = Profile.objects.get(pk=request.user.pk)
 
         if form_data.is_valid():
             comment = form_data.save(commit=False)
             comment.creator = profile
-            comment.post = post[0]
+            comment.post = post
             comment.save()
 
-        return redirect('post details page', post[0].pk)
+        return redirect('post details page', post.pk)
 
 
 def delete_comment(request, pk):

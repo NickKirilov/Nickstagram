@@ -3,8 +3,8 @@ import random
 from django.contrib.auth import login, get_user, get_user_model
 from django.contrib.auth import views as auth_views
 from django.contrib import messages
-from django.contrib.auth.hashers import get_hasher, check_password, make_password
-from django.core.mail import send_mail, send_mass_mail
+from django.contrib.auth.hashers import get_hasher
+from django.core.mail import send_mass_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import mixins as auth_mixins
@@ -13,6 +13,7 @@ from django.views import generic as views
 from nickstagram.accounts.forms import RegistrationForm, LoginForm, EditProfileForm, CreateProfileForm, \
     DeleteProfileForm
 from nickstagram.accounts.models import Profile
+from nickstagram.accounts.tasks import send_successful_changing_password_email
 from nickstagram.comments.forms import CommentPostForm
 from nickstagram.comments.models import Comments
 from nickstagram.web.models import Post, Likes
@@ -173,7 +174,7 @@ class DeleteProfileView(auth_mixins.LoginRequiredMixin, views.DeleteView):
         return redirect('home page')
 
 
-class ChangePasswordView(views.UpdateView, auth_mixins.LoginRequiredMixin):
+class ChangePasswordView(auth_mixins.LoginRequiredMixin, views.UpdateView):
     model = UserModel
     template_name = 'account_templates/reset_password.html'
     fields = ('password',)
@@ -189,6 +190,7 @@ class ChangePasswordView(views.UpdateView, auth_mixins.LoginRequiredMixin):
             try:
                 user.set_password(new_password)
                 user.save()
+                send_successful_changing_password_email.delay(profile_pk=user.pk)
                 messages.success(request, 'Successful change of password!')
                 return redirect('profile page', user.pk)
             except:
@@ -223,7 +225,7 @@ class ForgottenPasswordView(views.View):
         message = (
             'Forgotten password',
             f'This is your password: {new_password} || after logining with it change it!',
-            'garaj.garaj.garaj@gmail.com',
+            '',
             [profile.email]
         )
         try:

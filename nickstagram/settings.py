@@ -19,7 +19,8 @@ APP_ENVIRONMENT = os.getenv('APP_ENVIRONMENT')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'nickstagram.comments',
 
     'cloudinary',
+    'widget_tweaks',
+    'django_celery_results',
 ]
 
 SITE_ID = 1
@@ -177,10 +180,11 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # Celery configuration
-CELERY_TIMEZONE = "Europe/Bulgaria"
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60
+# CELERY_TIMEZONE = "Europe/Sofia"
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
