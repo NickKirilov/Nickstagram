@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "mgpz2RGqjZv4hedewfh6aI97PW1lHiwbUWFhongnHdQKDD+/OzqL4gss00Uco07jmyPbyjyqadx1J4DKo30u2A==",
+  "success": true,
+  "projectFilePath": "D:\\c#\\Magical_square\\Magical_square.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Nikol\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.13\\microsoft.netcore.app.host.win-x64.3.1.13.nupkg.sha512"
+  ],
+  "logs": []
+}

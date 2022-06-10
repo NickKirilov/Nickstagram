@@ -1,0 +1,15 @@
+D:\c#\Sudoku\bin\Debug\netcoreapp3.1\Sudoku.exe
+D:\c#\Sudoku\bin\Debug\netcoreapp3.1\Sudoku.deps.json
+D:\c#\Sudoku\bin\Debug\netcoreapp3.1\Sudoku.runtimeconfig.json
+D:\c#\Sudoku\bin\Debug\netcoreapp3.1\Sudoku.runtimeconfig.dev.json
+D:\c#\Sudoku\bin\Debug\netcoreapp3.1\Sudoku.dll
+D:\c#\Sudoku\bin\Debug\netcoreapp3.1\Sudoku.pdb
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.csprojAssemblyReference.cache
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.Form1.resources
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.csproj.GenerateResource.cache
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.AssemblyInfoInputs.cache
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.AssemblyInfo.cs
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.csproj.CoreCompileInputs.cache
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.dll
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.pdb
+D:\c#\Sudoku\obj\Debug\netcoreapp3.1\Sudoku.genruntimeconfig.cache

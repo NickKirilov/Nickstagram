@@ -1,0 +1,10 @@
+D:\c#\toto_6_ot_49\obj\Debug\toto_6_ot_49.csprojAssemblyReference.cache
+D:\c#\toto_6_ot_49\obj\Debug\toto_6_ot_49.Form1.resources
+D:\c#\toto_6_ot_49\obj\Debug\toto_6_ot_49.Properties.Resources.resources
+D:\c#\toto_6_ot_49\obj\Debug\toto_6_ot_49.csproj.GenerateResource.cache
+D:\c#\toto_6_ot_49\obj\Debug\toto_6_ot_49.csproj.CoreCompileInputs.cache
+D:\c#\toto_6_ot_49\bin\Debug\toto_6_ot_49.exe.config
+D:\c#\toto_6_ot_49\bin\Debug\toto_6_ot_49.exe
+D:\c#\toto_6_ot_49\bin\Debug\toto_6_ot_49.pdb
+D:\c#\toto_6_ot_49\obj\Debug\toto_6_ot_49.exe
+D:\c#\toto_6_ot_49\obj\Debug\toto_6_ot_49.pdb

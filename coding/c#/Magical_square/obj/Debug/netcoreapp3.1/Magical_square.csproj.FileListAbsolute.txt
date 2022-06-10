@@ -1,0 +1,15 @@
+D:\c#\Magical_square\bin\Debug\netcoreapp3.1\Magical_square.exe
+D:\c#\Magical_square\bin\Debug\netcoreapp3.1\Magical_square.deps.json
+D:\c#\Magical_square\bin\Debug\netcoreapp3.1\Magical_square.runtimeconfig.json
+D:\c#\Magical_square\bin\Debug\netcoreapp3.1\Magical_square.runtimeconfig.dev.json
+D:\c#\Magical_square\bin\Debug\netcoreapp3.1\Magical_square.dll
+D:\c#\Magical_square\bin\Debug\netcoreapp3.1\Magical_square.pdb
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.csprojAssemblyReference.cache
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.Form1.resources
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.csproj.GenerateResource.cache
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.AssemblyInfoInputs.cache
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.AssemblyInfo.cs
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.csproj.CoreCompileInputs.cache
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.dll
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.pdb
+D:\c#\Magical_square\obj\Debug\netcoreapp3.1\Magical_square.genruntimeconfig.cache
